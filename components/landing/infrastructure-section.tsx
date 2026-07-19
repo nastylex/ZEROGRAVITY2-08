@@ -3,10 +3,10 @@
 import { useEffect, useState, useRef } from "react";
 
 const regions = [
-  { name: "North America", nodes: 12, status: "operational" },
-  { name: "Europe", nodes: 8, status: "operational" },
-  { name: "Asia Pacific", nodes: 6, status: "operational" },
-  { name: "South America", nodes: 3, status: "operational" },
+  { name: "North Uganda", nodes: 12, status: "operational" },
+  { name: "Kampala", nodes: 8, status: "operational" },
+  { name: "Eastern Uganda", nodes: 6, status: "operational" },
+  { name: "Western Region", nodes: 3, status: "operational" },
 ];
 
 export function InfrastructureSection() {
@@ -72,8 +72,7 @@ export function InfrastructureSection() {
               <p className={`mt-8 text-xl text-muted-foreground leading-relaxed max-w-lg transition-all duration-1000 delay-100 ${
                 isVisible ? "opacity-100" : "opacity-0"
               }`}>
-                Your agents run on distributed infrastructure across 29 regions.
-                Sub-50ms latency to 99% of the world.
+                Your systems agents run on distributed infrastructure across 29 regions. Sub-50ms latency to 99% of the world. POWERED BY MACMAS
               </p>
             </div>
           </div>

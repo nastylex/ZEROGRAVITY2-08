@@ -6,13 +6,13 @@ import { ArrowRight, Check, Zap } from "lucide-react";
 const plans = [
   {
     name: "Explorer",
-    description: "For tinkering and small automations",
+    description: "For small automations",
     price: { monthly: 0, annual: 0 },
     features: [
-      "3 concurrent agents",
-      "1,000 tasks/month",
+      "3 concurrent workflows",
+      "1,000+ Uptime",
       "Community support",
-      "Basic logging",
+      "File Features",
       "Public integrations",
     ],
     cta: "Start free",
@@ -20,33 +20,33 @@ const plans = [
   },
   {
     name: "Builder",
-    description: "For teams shipping with agents",
+    description: "For teams",
     price: { monthly: 79, annual: 65 },
     features: [
-      "25 concurrent agents",
-      "50,000 tasks/month",
+      "25 concurrent workflows",
+      "50,000+ Uptime",
       "Priority support",
       "Full audit trails",
       "Private integrations",
       "Team workspaces",
-      "Custom agent roles",
+      "Custom file roles",
     ],
     cta: "Start trial",
     highlight: true,
   },
   {
     name: "Scale",
-    description: "For agent-first organizations",
+    description: "For organizations",
     price: { monthly: null, annual: null },
     features: [
-      "Unlimited agents",
-      "Unlimited tasks",
+      "Unlimited storage",
+      "Unlimited Up-Time-hours",
       "24/7 dedicated support",
-      "On-premise deployment",
-      "SLA guarantee",
-      "Custom LLM routing",
+      "On-premise server manangement",
+      "Security at must",
+      "Custom STMP File System",
       "Advanced security",
-      "Dedicated compute",
+      "Dedicated infrastructure",
     ],
     cta: "Contact sales",
     highlight: false,
@@ -142,7 +142,7 @@ export function PricingSection() {
                     {plan.price.monthly !== null ? (
                       <div className="flex items-baseline gap-2">
                         <span className="text-5xl lg:text-6xl font-display">
-                          ${isAnnual ? plan.price.annual : plan.price.monthly}
+                          UGX {isAnnual ? plan.price.annual : plan.price.monthly}
                         </span>
                         <span className="text-muted-foreground text-sm">/month</span>
                       </div>
