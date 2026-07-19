@@ -5,39 +5,40 @@ import { useEffect, useRef, useState } from "react";
 const steps = [
   {
     number: "01",
-    title: "Define",
-    subtitle: "your agent",
-    description: "Describe what your agent should do. Set its capabilities, constraints, and goals in natural language or code.",
-    code: `const researcher = new Agent({
-  role: 'Research Analyst',
-  capabilities: ['web', 'docs', 'api'],
-  memory: true,
-  autonomy: 'full'
+    title: "Upload",
+    subtitle: "your files",
+    description: "Simply upload your files, photos, or documents. Drag and drop or use the web interface. No size limits, ever.",
+    code: `const storage = new Zerogravity({
+  plan: 'unlimited',
+  encryption: '256-bit',
+  regions: 'auto-replicate',
+  accessibility: 'global'
 })`,
   },
   {
     number: "02",
-    title: "Assign",
-    subtitle: "the task",
-    description: "Give your agent a mission. It breaks down complex tasks into steps and executes them autonomously.",
-    code: `await researcher.execute({
-  task: 'Analyze competitor pricing',
-  sources: ['public-data', 'news'],
-  output: 'structured-report',
-  deadline: '2h'
+    title: "Organize",
+    subtitle: "with ease",
+    description: "Create folders and organize your content. Smart tagging and powerful search help you find anything in seconds.",
+    code: `await storage.organize({
+  action: 'create-folder',
+  name: 'My Projects',
+  privacy: 'shared-link',
+  viewers: ['team@company.com']
 })`,
   },
   {
     number: "03",
-    title: "Monitor",
-    subtitle: "& scale",
-    description: "Track progress in real-time. Spin up more agents as needed. Pay only for compute used.",
-    code: `optimus.dashboard({
-  agents: [researcher],
-  metrics: ['tasks', 'latency', 'cost'],
-  alerts: true
+    title: "Access",
+    subtitle: "everywhere",
+    description: "Access your files from any device, anywhere. Automatic sync keeps everything in perfect harmony.",
+    code: `zerogravity.dashboard({
+  devices: ['web', 'ios', 'android'],
+  sync: 'real-time',
+  bandwidth: 'unlimited',
+  offline: 'supported'
 })
-// 847 tasks completed today`,
+// 500M+ files stored`,
   },
 ];
 
@@ -81,16 +82,16 @@ export function HowItWorksSection() {
             <div className={`transition-all duration-1000 ${isVisible ? "translate-x-0 opacity-100" : "-translate-x-12 opacity-0"}`}>
               <span className="inline-flex items-center gap-3 text-sm font-mono text-white/40 mb-8">
                 <span className="w-12 h-px bg-white/20" />
-                Process
+                Getting Started
               </span>
             </div>
             
             <h2 className={`text-6xl md:text-7xl lg:text-[128px] font-display tracking-tight leading-[0.85] transition-all duration-1000 delay-100 ${
               isVisible ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0"
             }`}>
-              <span className="block">Define.</span>
-              <span className="block text-white/30">Deploy.</span>
-              <span className="block text-white/10">Scale.</span>
+              <span className="block">Upload.</span>
+              <span className="block text-white/30">Organize.</span>
+              <span className="block text-white/10">Access.</span>
             </h2>
           </div>
 

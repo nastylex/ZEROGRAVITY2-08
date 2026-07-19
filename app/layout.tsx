@@ -21,8 +21,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'AirSPACEx - AI Agents for Distributed Computing',
-  description: 'Deploy autonomous AI agents on distributed infrastructure. Offload complex tasks to intelligent workers that run 24/7.',
+  title: 'AirSPACEx - Unlimited Cloud Storage by Zerogravity',
+  description: 'Store everything with unlimited cloud storage. Your files, photos, and data safe and accessible anywhere with Zerogravity by AirSPACEx.',
   generator: 'v0.app',
 }
 

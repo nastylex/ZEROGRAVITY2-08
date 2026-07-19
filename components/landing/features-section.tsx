@@ -5,27 +5,27 @@ import { useEffect, useRef, useState } from "react";
 const features = [
   {
     number: "01",
-    title: "Autonomous Execution",
-    description: "Deploy AI agents that work independently. They analyze, decide, and execute complex multi-step tasks without human intervention.",
-    stats: { value: "99.7%", label: "task completion" },
+    title: "Unlimited Storage",
+    description: "Store as much as you need. With Zerogravity, there are no storage limits. Keep all your files, photos, videos, and documents in one place.",
+    stats: { value: "∞", label: "storage capacity" },
   },
   {
     number: "02",
-    title: "Distributed Computing",
-    description: "Offload complex tasks to our global network. Your agents run on optimized infrastructure across 50+ regions worldwide.",
+    title: "Global Accessibility",
+    description: "Access your files anywhere, anytime. Your data is distributed across secure servers in 50+ regions worldwide for maximum availability.",
     stats: { value: "50+", label: "global regions" },
   },
   {
     number: "03",
-    title: "Multi-Agent Orchestration",
-    description: "Coordinate teams of specialized agents. They communicate, delegate, and collaborate to solve complex problems together.",
-    stats: { value: "1000x", label: "parallel execution" },
+    title: "Seamless Sync",
+    description: "Automatically sync across all your devices. Changes appear instantly on phone, tablet, and desktop without manual uploads.",
+    stats: { value: "0ms", label: "sync latency" },
   },
   {
     number: "04",
-    title: "Secure Sandboxing",
-    description: "Each agent runs in isolated environments. Full audit trails, encrypted execution, and zero data leakage between tasks.",
-    stats: { value: "0", label: "data breaches" },
+    title: "Enterprise Security",
+    description: "Military-grade encryption protects your data. End-to-end encryption, advanced access controls, and comprehensive audit trails included.",
+    stats: { value: "256-bit", label: "encryption" },
   },
 ];
 
@@ -158,23 +158,23 @@ export function FeaturesSection() {
             <div className="lg:col-span-7">
               <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
                 <span className="w-12 h-px bg-foreground/30" />
-                Capabilities
+                Features
               </span>
               <h2
                 className={`text-6xl md:text-7xl lg:text-[128px] font-display tracking-tight leading-[0.9] transition-all duration-1000 ${
                   isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                 }`}
               >
-                Intelligent
+                Storage
                 <br />
-                <span className="text-muted-foreground">workers.</span>
+                <span className="text-muted-foreground">perfected.</span>
               </h2>
             </div>
             <div className="lg:col-span-5 lg:pb-4">
               <p className={`text-xl text-muted-foreground leading-relaxed transition-all duration-1000 delay-200 ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               }`}>
-                Deploy autonomous AI agents that execute complex tasks across distributed infrastructure. No supervision required.
+                Experience unlimited cloud storage with advanced encryption and global access. Your data, always available, always secure.
               </p>
             </div>
           </div>
