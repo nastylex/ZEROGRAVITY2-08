@@ -5,11 +5,11 @@ import { useState, useEffect, useRef } from "react";
 const features = [
   { 
     title: "TypeScript native", 
-    description: "Full type safety for agent configs and file save systems"
+    description: "Full type safety for agent configs and responses."
   },
   { 
     title: "Streaming results", 
-    description: "Watch your time fly with ease"
+    description: "Watch your agents think and act in real-time."
   },
   { 
     title: "Multi-model support", 
@@ -17,7 +17,7 @@ const features = [
   },
   { 
     title: "Local debugging", 
-    description: "Test FTP locally before deploying to cloud."
+    description: "Test agents locally before deploying to cloud."
   },
 ];
 
@@ -71,7 +71,9 @@ export function DevelopersSection() {
             Developer SDK
           </span>
           <h2 className="text-6xl md:text-7xl lg:text-[128px] font-display tracking-tight leading-[0.9]">
-            Save Your Files .
+            Code your agents.
+            <br />
+            <span className="text-muted-foreground">Or let them code.</span>
           </h2>
         </div>
 
@@ -82,7 +84,8 @@ export function DevelopersSection() {
           }`}
         >
           <p className="text-xl text-muted-foreground mb-12 leading-relaxed max-w-md">
-            A powerful SDK for building, deploying, and orchestrating your files. Define behaviors in file systems or natural language.
+            A powerful SDK for building, deploying, and orchestrating AI agents. 
+            Define behaviors in code or natural language.
           </p>
           <div className="grid grid-cols-2 gap-6">
             {features.map((feature, index) => (

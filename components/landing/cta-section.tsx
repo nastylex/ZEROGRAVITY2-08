@@ -58,7 +58,7 @@ export function CtaSection() {
 
                 <p className="text-xl text-muted-foreground mb-12 leading-relaxed max-w-xl">
                   Join millions storing everything with unlimited cloud storage. 
-                  Get started with ZEROGRAVITY in seconds.
+                  Get started with Zerogravity in seconds.
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-start gap-4">
