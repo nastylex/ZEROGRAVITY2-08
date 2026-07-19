@@ -12,7 +12,7 @@ const features = [
   {
     number: "02",
     title: "Distributed Computing",
-    description: "Offload compute-heavy tasks to our global network. Your agents run on optimized infrastructure across 50+ regions worldwide.",
+    description: "Offload complex tasks to our global network. Your agents run on optimized infrastructure across 50+ regions worldwide.",
     stats: { value: "50+", label: "global regions" },
   },
   {

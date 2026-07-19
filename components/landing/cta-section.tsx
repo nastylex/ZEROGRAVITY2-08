@@ -57,7 +57,7 @@ export function CtaSection() {
                 </h2>
 
                 <p className="text-xl text-muted-foreground mb-12 leading-relaxed max-w-xl">
-                  Join teams automating complex workflows with COMPUTE agents. 
+                  Join teams automating complex workflows with AirSPACEx agents. 
                   Deploy your first agent in minutes.
                 </p>
 
@@ -79,7 +79,7 @@ export function CtaSection() {
                 </div>
 
                 <p className="text-sm text-muted-foreground mt-8 font-mono">
-                  1,000 free tasks with COMPUTE
+                  1,000 free tasks with AirSPACEx
                 </p>
               </div>
 
