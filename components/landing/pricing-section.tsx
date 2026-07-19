@@ -142,7 +142,7 @@ export function PricingSection() {
                     {plan.price.monthly !== null ? (
                       <div className="flex items-baseline gap-2">
                         <span className="text-5xl lg:text-6xl font-display">
-                          ${isAnnual ? plan.price.annual : plan.price.monthly}
+                          UGX {isAnnual ? plan.price.annual : plan.price.monthly}
                         </span>
                         <span className="text-muted-foreground text-sm">/month</span>
                       </div>
