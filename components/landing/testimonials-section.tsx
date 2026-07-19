@@ -33,7 +33,7 @@ const testimonials = [
     metric: { value: "50+", label: "Global regions" },
   },
    {
-    quote: "Zerogravity has changed my life since im a broke Naalya student how has no where to keep and store my work thank you AirSPACEx.",
+    quote: "Zerogravity has changed my life since I'm a broke Naalya student how has no where to keep and store my work thank you AirSPACEx.",
     author: "Kimuli Jonathan",
     role: "Student",
     company: "AirSPACEx",
