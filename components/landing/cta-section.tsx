@@ -74,12 +74,12 @@ export function CtaSection() {
                     variant="outline"
                     className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5"
                   >
-                    Book a demo
+                    Try a Sample
                   </Button>
                 </div>
 
                 <p className="text-sm text-muted-foreground mt-8 font-mono">
-                  50GB free with Zerogravity
+                  50GB free with ZEROGRAVITY
                 </p>
               </div>
 
