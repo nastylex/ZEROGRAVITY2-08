@@ -8,7 +8,7 @@ const metrics = [
     suffix: "", 
     prefix: "",
     label: "Tasks completed today",
-    sublabel: "by 23,847 active agents",
+    sublabel: "by 23,847 active storage systems",
   },
   { 
     value: 99, 
@@ -261,7 +261,7 @@ export function MetricsSection() {
             }`}>
               Real-time
               <br />
-              <span className="text-muted-foreground">agent metrics.</span>
+              <span className="text-muted-foreground">storage metrics.</span>
             </h2>
           </div>
         </div>
@@ -328,10 +328,10 @@ export function MetricsSection() {
         <div className={`mt-16 pt-8 border-t border-foreground/10 flex flex-wrap items-center gap-x-12 gap-y-4 text-sm font-mono text-muted-foreground transition-all duration-1000 delay-500 ${
           isVisible ? "opacity-100" : "opacity-0"
         }`}>
-          <span>OpenAI GPT-4 Turbo</span>
-          <span>Anthropic Claude 3</span>
-          <span>Mistral Large</span>
-          <span>Llama 3</span>
+          <span>ZEROGRAVITY PRO</span>
+          <span>ZEROGRAVITY ENTERPRISE</span>
+          <span>ZEROGRAVITY V3 PRO</span>
+          <span>ZEROGRAVITY INTEL</span>
           <span className="text-foreground">+12 more models</span>
         </div>
       </div>

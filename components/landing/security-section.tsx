@@ -7,7 +7,7 @@ const securityFeatures = [
   {
     icon: Shield,
     title: "Isolated execution",
-    description: "Each agent runs in its own secure sandbox.",
+    description: "Exploites are kept out",
     image: "/images/isolated.jpg",
   },
   {
@@ -84,7 +84,7 @@ export function SecuritySection() {
             isVisible ? "opacity-100" : "opacity-0"
           }`}>
             <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl">
-              Your agents are powerful but constrained. Enterprise-grade security ensures they only do what you allow.
+              Your storage systems are powerful but constrained. Enterprise-grade security at ZEROGRAVITY is a must!!!
             </p>
           </div>
         </div>
