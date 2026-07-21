@@ -141,7 +141,7 @@ export function Navigation() {
               className="flex-1 bg-foreground text-background rounded-full h-14 text-base"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Deploy agent
+              Get Started
             </Button>
           </div>
         </div>
