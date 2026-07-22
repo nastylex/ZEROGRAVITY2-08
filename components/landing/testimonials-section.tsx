@@ -27,9 +27,9 @@ const testimonials = [
   },
   {
     quote: "The design systems and infrastructure behind Zerogravity is perfectly aligned with modern cloud standards.",
-    author: "Okello Mathew",
-    role: "MD of Design Systems",
-    company: "AirSPACEx",
+    author: "DanaTenz",
+    role: "Student",
+    company: "Naalya",
     metric: { value: "50+", label: "Global regions" },
   },
    {
