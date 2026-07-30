@@ -24,7 +24,7 @@ const steps = [
   action: 'create-folder',
   name: 'My Projects',
   privacy: 'shared-link',
-  viewers: ['team@company.com']
+  viewers: ['airspacedevtools@proton.me']
 })`,
   },
   {
