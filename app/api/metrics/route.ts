@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { query } from "@/lib/db";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -17,6 +16,7 @@ export async function GET(request: Request) {
   }
 
   try {
+    const { query } = await import("@/lib/db");
     const rows = await query(
       `SELECT date_trunc('hour', started_at) as bucket, COUNT(*) as visitors
        FROM sessions
