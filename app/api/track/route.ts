@@ -3,7 +3,7 @@
 // tracker. GET /api/track?path=...&title=... is kept as a script-less fallback.
 
 import { NextRequest } from "next/server";
-import { getStore } from "@/lib/analytics/store";
+import { record } from "@/lib/analytics/store";
 
 export const dynamic = "force-dynamic";
 
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
   const path = typeof body.path === "string" ? body.path : "";
   if (!shouldTrack(path)) return new Response(null, { status: 204 });
 
-  getStore().record({
+  await record({
     path,
     title: typeof body.title === "string" ? body.title.slice(0, 200) : undefined,
     referrer: typeof body.referrer === "string" && body.referrer ? body.referrer.slice(0, 500) : undefined,
@@ -57,7 +57,7 @@ export async function GET(req: NextRequest) {
   const path = req.nextUrl.searchParams.get("path") ?? "";
   if (!shouldTrack(path)) return new Response(null, { status: 204 });
 
-  getStore().record({
+  await record({
     path,
     title: req.nextUrl.searchParams.get("title")?.slice(0, 200) ?? undefined,
     referrer: req.nextUrl.searchParams.get("referrer")?.slice(0, 500) ?? undefined,

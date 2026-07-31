@@ -3,7 +3,7 @@
 // Requires server-side auth so only admins can open the stream.
 
 import { auth } from "@/lib/auth";
-import { getStore } from "@/lib/analytics/store";
+import { snapshot } from "@/lib/analytics/store";
 
 export const dynamic = "force-dynamic";
 
@@ -20,12 +20,16 @@ export async function GET(req: Request) {
       // Send a comment to establish the connection (optional).
       controller.enqueue(encoder.encode(`: connected\n\n`));
 
-      const send = () => {
-        const payload = getStore().snapshot();
-        controller.enqueue(encoder.encode(`data: ${JSON.stringify(payload)}\n\n`));
+      const send = async () => {
+        try {
+          const payload = await snapshot();
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify(payload)}\n\n`));
+        } catch {
+          // Transient DB error — skip this tick rather than killing the stream.
+        }
       };
 
-      send();
+      void send();
       const iv = setInterval(send, 2000);
 
       // Close when the client disconnects.
