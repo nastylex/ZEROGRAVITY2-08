@@ -1,8 +1,11 @@
-// SSE stream for admin dashboard (Vercel-compatible)
-// Streams events as `data: <json>\n\n`
-// Requires server-side auth to ensure only admins can open the stream.
+// SSE stream for the admin dashboard.
+// Pushes a fresh analytics snapshot every 2 seconds as `data: <json>\n\n`.
+// Requires server-side auth so only admins can open the stream.
 
 import { auth } from "@/lib/auth";
+import { getStore } from "@/lib/analytics/store";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
   const session = await auth();
@@ -14,32 +17,18 @@ export async function GET(req: Request) {
 
   const stream = new ReadableStream({
     start(controller) {
-      // send a comment to establish the connection (optional)
-      controller.enqueue(encoder.encode(": connected\n\n"));
+      // Send a comment to establish the connection (optional).
+      controller.enqueue(encoder.encode(`: connected\n\n`));
 
-      // Example: send periodic updates. Replace with real metrics fetch.
-      const sendUpdate = () => {
-        const payload = {
-          time: new Date().toISOString(),
-          // Replace these simulated fields with real values from your analytics/event store
-          visitors: Math.floor(Math.random() * 3000),
-          signups: Math.floor(Math.random() * 200),
-          trafficSources: [
-            { source: "Organic search", value: Math.floor(Math.random() * 5000) },
-            { source: "Direct", value: Math.floor(Math.random() * 3000) },
-            { source: "Social", value: Math.floor(Math.random() * 1500) },
-            { source: "Referral", value: Math.floor(Math.random() * 1000) },
-            { source: "Email", value: Math.floor(Math.random() * 600) },
-          ],
-        };
+      const send = () => {
+        const payload = getStore().snapshot();
         controller.enqueue(encoder.encode(`data: ${JSON.stringify(payload)}\n\n`));
       };
 
-      // initial send
-      sendUpdate();
-      const iv = setInterval(sendUpdate, 2000);
+      send();
+      const iv = setInterval(send, 2000);
 
-      // Close when client disconnects
+      // Close when the client disconnects.
       const abortHandler = () => {
         clearInterval(iv);
         try {
@@ -49,7 +38,7 @@ export async function GET(req: Request) {
       req.signal.addEventListener?.("abort", abortHandler);
     },
     cancel() {
-      // client cancelled — nothing extra needed here
+      // Client cancelled — nothing extra needed here.
     },
   });
 
