@@ -17,3 +17,5 @@ node_modules
 next-env.d.ts
 tsconfig.tsbuildinfo
 package-lock.json
+.vercel
+.env*
