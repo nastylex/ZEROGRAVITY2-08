@@ -24,8 +24,13 @@ export async function GET(req: Request) {
         try {
           const payload = await snapshot();
           controller.enqueue(encoder.encode(`data: ${JSON.stringify(payload)}\n\n`));
-        } catch {
-          // Transient DB error — skip this tick rather than killing the stream.
+        } catch (err) {
+          // Transient DB error — push an error event so the dashboard can show
+          // the reason instead of silently skipping ticks.
+          const message = err instanceof Error ? err.message : "Analytics unavailable";
+          controller.enqueue(
+            encoder.encode(`event: analytics-error\ndata: ${JSON.stringify({ error: message })}\n\n`),
+          );
         }
       };
 

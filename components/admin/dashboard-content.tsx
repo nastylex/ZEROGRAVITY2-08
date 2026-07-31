@@ -27,6 +27,7 @@ import {
 } from "recharts";
 import {
   Activity,
+  AlertTriangle,
   ExternalLink,
   Globe,
   MapIcon,
@@ -74,45 +75,92 @@ const SOURCE_STYLES: Record<string, string> = {
 export function DashboardContent() {
   const [snapshot, setSnapshot] = useState<AnalyticsSnapshot | null>(null);
   const [conn, setConn] = useState<ConnState>("connecting");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let es: EventSource | null = null;
     let cancelled = false;
+    let loaded = false;
+
+    const fail = (message: string) => {
+      if (cancelled) return;
+      clearTimeout(timeout);
+      setError(message);
+      setConn("offline");
+    };
+
+    // Safety net: never leave the skeleton spinning forever.
+    // Declared here so `fail` can clear it (all call sites run async,
+    // after this line assigns the timer).
+    const timeout = setTimeout(() => {
+      fail("Analytics is taking too long to load. Is DATABASE_URL configured?");
+    }, 10_000);
 
     // Initial snapshot via REST, then live updates via SSE.
     fetch("/api/admin/analytics", { cache: "no-store" })
-      .then((r) => (r.ok ? r.json() : null))
+      .then(async (r) => {
+        if (!r.ok) {
+          let message = `Analytics API returned ${r.status}`;
+          try {
+            const body = await r.json();
+            if (body?.error) message = body.error;
+          } catch {
+            // keep fallback message
+          }
+          fail(message);
+          return null;
+        }
+        return r.json();
+      })
       .then((data) => {
         if (data && !cancelled) {
+          loaded = true;
+          clearTimeout(timeout);
           setSnapshot(data);
+          setError(null);
           setConn("live");
         }
       })
-      .catch(() => {
-        if (!cancelled) setConn("offline");
-      });
+      .catch(() => fail("Couldn't reach the analytics API."));
 
     es = new EventSource("/api/admin/stream");
     es.onmessage = (e) => {
       try {
         const data = JSON.parse(e.data);
         if (data?.summary) {
+          loaded = true;
+          clearTimeout(timeout);
           setSnapshot(data);
+          setError(null);
           setConn("live");
         }
       } catch {
         // ignore malformed messages
       }
     };
+    es.addEventListener("analytics-error", (e) => {
+      try {
+        const data = JSON.parse((e as MessageEvent).data);
+        fail(data?.error ?? "Analytics stream failed.");
+      } catch {
+        fail("Analytics stream failed.");
+      }
+    });
     es.onerror = () => {
-      if (!cancelled) setConn("offline");
+      // EventSource auto-reconnects; only flag it if nothing has loaded yet.
+      if (!loaded && !cancelled) setConn("offline");
     };
 
     return () => {
       cancelled = true;
+      clearTimeout(timeout);
       es?.close();
     };
   }, []);
+
+  if (error && !snapshot) {
+    return <DashboardError message={error} />;
+  }
 
   if (!snapshot) {
     return <DashboardSkeleton />;
@@ -582,6 +630,25 @@ function DashboardSkeleton() {
       </div>
       <div className="h-72 w-full animate-pulse rounded-xl bg-white/5" />
       <div className="h-56 w-full animate-pulse rounded-xl bg-white/5" />
+    </div>
+  );
+}
+
+function DashboardError({ message }: { message: string }) {
+  return (
+    <div className="rounded-xl border border-rose-400/20 bg-rose-400/5 px-6 py-10 text-center">
+      <AlertTriangle className="mx-auto size-7 text-rose-300" />
+      <p className="mt-3 text-sm font-medium text-white">Couldn&apos;t load analytics</p>
+      <p className="mx-auto mt-1 max-w-md text-xs text-white/50">{message}</p>
+      <p className="mt-2 text-xs text-white/40">
+        Make sure DATABASE_URL is set and the server can reach Postgres, then retry.
+      </p>
+      <button
+        onClick={() => window.location.reload()}
+        className="mt-5 rounded-md border border-white/15 bg-white/5 px-4 py-1.5 text-xs text-white/80 transition-colors hover:bg-white/10"
+      >
+        Retry
+      </button>
     </div>
   );
 }
