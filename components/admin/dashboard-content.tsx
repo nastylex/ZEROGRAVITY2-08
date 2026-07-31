@@ -170,7 +170,7 @@ export function DashboardContent() {
             Traffic volume — last 30 days
           </CardTitle>
           <CardDescription className="text-white/50">
-            Daily pageviews (includes sample history until real visits accumulate)
+            Daily pageviews — real tracked visits, last 30 days
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -350,7 +350,7 @@ function ConnectionBanner({ conn }: { conn: ConnState }) {
     <div className="flex flex-wrap items-center gap-3 rounded-lg border border-amber-400/20 bg-amber-400/5 px-4 py-2.5 text-xs text-amber-200/80">
       <span className="flex items-center gap-1.5">
         <Activity className="size-3.5" />
-        Self-hosted analytics — in-memory store: data resets on restart. Sample history is shown until real visits arrive.
+        Self-hosted analytics — Postgres store: real data only, retained 1230 days, then auto-purged.
       </span>
       <Badge variant="outline" className={`ml-auto border ${chip.cls}`}>
         {chip.text}
@@ -366,7 +366,7 @@ function SummaryCards({ summary }: { summary: AnalyticsSnapshot["summary"] }) {
       value: fmt(summary.pageviews30d),
       delta: fmtDelta(summary.viewsDelta7d),
       deltaClass: deltaClass(summary.viewsDelta7d),
-      foot: `avg ${fmt(summary.avgDaily)} / day · incl. sample`,
+      foot: `avg ${fmt(summary.avgDaily)} / day`,
       icon: MousePointerClick,
       accent: "text-cyan-300",
     },
@@ -375,7 +375,7 @@ function SummaryCards({ summary }: { summary: AnalyticsSnapshot["summary"] }) {
       value: fmt(summary.unique30d),
       delta: fmtDelta(summary.visitorsDelta7d),
       deltaClass: deltaClass(summary.visitorsDelta7d),
-      foot: `${fmt(summary.uniqueVisitors)} all-time · incl. sample`,
+      foot: `${fmt(summary.uniqueVisitors)} all-time`,
       icon: Users,
       accent: "text-violet-300",
     },
@@ -393,7 +393,7 @@ function SummaryCards({ summary }: { summary: AnalyticsSnapshot["summary"] }) {
       value: fmt(summary.today),
       delta: null,
       deltaClass: "",
-      foot: `${fmt(summary.pageviews)} total tracked · incl. sample`,
+      foot: `${fmt(summary.pageviews)} total tracked`,
       icon: Zap,
       accent: "text-amber-300",
     },
