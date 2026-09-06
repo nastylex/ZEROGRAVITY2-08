@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import { verifyUser } from "@/lib/user-data";
 
 /**
  * Single-admin auth setup.
@@ -38,20 +39,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const adminEmail = process.env.ADMIN_EMAIL;
         const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
 
-        if (!email || !password || !adminEmail || !adminPasswordHash) {
-          return null;
+        if (!email || !password) return null;
+
+        if (adminEmail && adminPasswordHash && email.toLowerCase() === adminEmail.toLowerCase()) {
+          const passwordMatches = await bcrypt.compare(password, adminPasswordHash);
+          if (passwordMatches) return { id: "admin", email: adminEmail, name: "Admin", role: "admin" };
         }
 
-        if (email.toLowerCase() !== adminEmail.toLowerCase()) {
-          return null;
-        }
-
-        const passwordMatches = await bcrypt.compare(password, adminPasswordHash);
-        if (!passwordMatches) {
-          return null;
-        }
-
-        return { id: "admin", email: adminEmail, name: "Admin" };
+        const appUser = await verifyUser(email, password);
+        if (!appUser) return null;
+        return { ...appUser, role: "user" };
       },
     }),
   ],
@@ -59,12 +56,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.role = user.role;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
+        session.user.role = token.role as string;
       }
       return session;
     },
