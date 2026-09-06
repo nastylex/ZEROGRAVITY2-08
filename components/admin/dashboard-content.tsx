@@ -34,10 +34,16 @@ import {
   MousePointerClick,
   Radio,
   Users,
+  HardDrive,
+  FileText,
+  Share2,
+  Folder,
+  UserPlus,
   Zap,
 } from "lucide-react";
 import type { AnalyticsSnapshot } from "@/lib/analytics/store";
 import { SiteStructure } from "./site-structure";
+import { AdminOverview } from "./admin-overview";
 
 const PIE_COLORS = ["#67e8f9", "#a78bfa", "#eca8d6", "#fbbf24", "#4ade80", "#60a5fa"];
 
@@ -171,6 +177,7 @@ export function DashboardContent() {
       <ConnectionBanner conn={conn} />
 
       <SummaryCards summary={snapshot.summary} />
+      <AdminOverview metrics={snapshot.admin} />
 
       <Card className="border-white/10 bg-white/5">
         <CardHeader>

@@ -73,8 +73,35 @@ export interface Summary {
   visitorsDelta7d: number;
 }
 
+export interface UserMetric {
+  id: string;
+  name: string;
+  email: string;
+  files: number;
+  bytes: number;
+  shared: number;
+  lastSignup: string;
+}
+
+export interface AdminMetrics {
+  users: number;
+  newUsers30d: number;
+  activeUsers30d: number;
+  files: number;
+  bytes: number;
+  sharedFiles: number;
+  folders: number;
+  uploads30d: number;
+  signups: Array<{ label: string; value: number }>;
+  storage: Array<{ label: string; value: number }>;
+  fileTypes: Slice[];
+  topUsers: UserMetric[];
+  recentSignups: Array<{ name: string; email: string; createdAt: string }>;
+}
+
 export interface AnalyticsSnapshot {
   generatedAt: string;
+  admin: AdminMetrics;
   summary: Summary;
   hourly: SeriesPoint[];
   daily: SeriesPoint[];
@@ -390,8 +417,53 @@ export async function snapshot(): Promise<AnalyticsSnapshot> {
     sample: r.sample,
   }));
 
+  const appUserRows = await query(`
+    SELECT u.id, u.name, u.email, u.created_at,
+      COUNT(f.id)::int AS files,
+      COALESCE(SUM(f.size), 0)::bigint AS bytes,
+      COUNT(f.id) FILTER (WHERE f.is_shared = TRUE)::int AS shared
+    FROM app_users u
+    LEFT JOIN stored_files f ON f.user_id = u.id
+    GROUP BY u.id, u.name, u.email, u.created_at
+    ORDER BY bytes DESC, u.created_at DESC
+  `);
+  const userRows = appUserRows.rows as Array<{ id: string; name: string; email: string; created_at: Date; files: number; bytes: string; shared: number }>;
+  const recentUserRows = [...userRows].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  const fileTotals = await query(`SELECT COUNT(*)::int AS files, COALESCE(SUM(size), 0)::bigint AS bytes, COUNT(*) FILTER (WHERE is_shared = TRUE)::int AS shared FROM stored_files`);
+  const folderTotals = await query(`SELECT COUNT(*)::int AS folders FROM file_folders`);
+  const uploadRows = await query(`SELECT created_at, size, content_type FROM stored_files WHERE created_at >= NOW() - INTERVAL '30 days' ORDER BY created_at ASC`);
+  const signupRows = await query(`SELECT created_at FROM app_users WHERE created_at >= NOW() - INTERVAL '30 days' ORDER BY created_at ASC`);
+  const activeRows = await query(`SELECT COUNT(DISTINCT user_id)::int AS count FROM stored_files WHERE created_at >= NOW() - INTERVAL '30 days'`);
+  const days = Array.from({ length: 30 }, (_, index) => {
+    const date = new Date(now - (29 - index) * DAY);
+    date.setHours(0, 0, 0, 0);
+    return date;
+  });
+  const labelFor = (date: Date) => date.toLocaleDateString([], { month: "short", day: "numeric" });
+  const signups = days.map((date) => ({ label: labelFor(date), value: signupRows.rows.filter((row) => new Date(row.created_at).toDateString() === date.toDateString()).length }));
+  const storage = days.map((date) => ({ label: labelFor(date), value: uploadRows.rows.filter((row) => new Date(row.created_at).toDateString() === date.toDateString()).reduce((total, row) => total + Number(row.size), 0) }));
+  const typeCounts = new Map<string, number>();
+  for (const row of uploadRows.rows) typeCounts.set(row.content_type || "unknown", (typeCounts.get(row.content_type || "unknown") ?? 0) + 1);
+  const fileCount = Number(fileTotals.rows[0]?.files ?? 0);
+  const admin: AdminMetrics = {
+    users: userRows.length,
+    newUsers30d: signupRows.rowCount ?? 0,
+    activeUsers30d: Number(activeRows.rows[0]?.count ?? 0),
+    files: fileCount,
+    bytes: Number(fileTotals.rows[0]?.bytes ?? 0),
+    sharedFiles: Number(fileTotals.rows[0]?.shared ?? 0),
+    folders: Number(folderTotals.rows[0]?.folders ?? 0),
+    uploads30d: uploadRows.rowCount ?? 0,
+    signups,
+    storage,
+    fileTypes: Array.from(typeCounts.entries()).map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value),
+    topUsers: userRows.slice(0, 8).map((row) => ({ id: row.id, name: row.name, email: row.email, files: Number(row.files), bytes: Number(row.bytes), shared: Number(row.shared), lastSignup: new Date(row.created_at).toISOString() })),
+    recentSignups: recentUserRows.slice(0, 8).map((row) => ({ name: row.name, email: row.email, createdAt: new Date(row.created_at).toISOString() })),
+  };
+
   return {
     generatedAt: new Date(now).toISOString(),
+    admin,
     summary,
     hourly,
     daily,

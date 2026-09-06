@@ -16,6 +16,9 @@ export default async function AdminDashboardPage() {
   if (!session) {
     redirect("/admin/login");
   }
+  if (session.user?.role !== "admin") {
+    redirect("/dashboard");
+  }
 
   return (
     <div className="min-h-screen bg-black px-6 py-10 lg:px-12">
