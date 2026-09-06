@@ -9,7 +9,7 @@ import { FilterResult, BotIndicators } from '../types/filter';
 
 export class FilterEngine {
   private botDetector: BotDetector;
-  private humanDetector: HumanDetector;
+  public humanDetector: HumanDetector;
 
   constructor() {
     this.botDetector = botDetector;
