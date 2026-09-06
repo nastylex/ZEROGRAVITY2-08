@@ -86,11 +86,11 @@ export function TestimonialsSection() {
 
   return (
     <section ref={sectionRef} className="relative py-32 lg:py-40 bg-foreground text-background overflow-hidden">
-      {/* ASCII background pattern */}
+      {/* Stable ASCII background pattern keeps server and client markup identical. */}
       <div className="absolute inset-0 font-mono text-[10px] text-background/[0.02] leading-tight overflow-hidden whitespace-pre select-none">
-        {Array.from({ length: 60 }, (_, i) => 
-          Array.from({ length: 100 }, () => 
-            Math.random() > 0.7 ? '"' : ' '
+        {Array.from({ length: 60 }, (_, row) =>
+          Array.from({ length: 100 }, (_, column) =>
+            (row * 17 + column * 31) % 10 < 3 ? '"' : ' '
           ).join("")
         ).join("\n")}
       </div>
@@ -203,7 +203,7 @@ export function TestimonialsSection() {
               <div className="flex flex-wrap gap-3">
                 {testimonials.map((t, idx) => (
                   <button
-                    key={t.company}
+                    key={`${t.company}-${idx}`}
                     onClick={() => goTo(idx)}
                     className={`px-4 py-2 text-sm border transition-all ${
                       idx === activeIndex 
