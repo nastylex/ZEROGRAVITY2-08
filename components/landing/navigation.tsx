@@ -35,7 +35,7 @@ export function Navigation() {
       <nav 
         className={`mx-auto transition-all duration-500 ${
           isScrolled || isMobileMenuOpen
-            ? "bg-background/80 backdrop-blur-xl border border-foreground/10 rounded-2xl shadow-lg max-w-[1200px]"
+            ? "glass rounded-full max-w-[1200px]"
             : "bg-transparent max-w-[1400px]"
         }`}
       >
@@ -80,7 +80,11 @@ export function Navigation() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`md:hidden p-2 transition-colors duration-500 ${isScrolled || isMobileMenuOpen ? "text-foreground" : "text-white"}`}
+            className={`md:hidden p-2 transition-colors duration-500 rounded-full ${
+              isScrolled || isMobileMenuOpen
+                ? "glass glass-hover text-foreground"
+                : "glass-dark glass-hover text-white"
+            }`}
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (

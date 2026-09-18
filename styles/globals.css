@@ -123,3 +123,89 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Liquid Glass material system                                        */
+/* Ported from the iOS 26 `swiftui-liquid-glass` agent skill:          */
+/* - glass is reserved for functional controls & navigation surfaces,  */
+/*   never general content backgrounds                                 */
+/* - static status stays non-interactive (no hover/press affordance)   */
+/* - fallbacks mirror the skill's availability + a11y gates:           */
+/*   @supports (no backdrop-filter) ≈ pre-iOS 26 fallback,             */
+/*   prefers-reduced-transparency ≈ Reduce Transparency,               */
+/*   prefers-reduced-motion ≈ Reduce Motion                            */
+/* ------------------------------------------------------------------ */
+@layer utilities {
+  /* Adaptive glass — theme-aware, for light/dark UI surfaces (nav bars) */
+  .glass {
+    background: color-mix(in oklab, var(--background) 55%, transparent);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    backdrop-filter: blur(20px) saturate(1.8);
+    border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);
+    box-shadow:
+      inset 0 1px 0 0 rgb(255 255 255 / 0.35), /* specular top highlight */
+      inset 0 -1px 0 0 color-mix(in oklab, var(--foreground) 6%, transparent),
+      0 8px 32px rgb(0 0 0 / 0.08);
+  }
+
+  /* Dark glass — fixed to video/dark backdrops (hero HUD, badges) */
+  .glass-dark {
+    background: rgb(255 255 255 / 0.08);
+    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+    backdrop-filter: blur(24px) saturate(1.6);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    box-shadow:
+      inset 0 1px 0 0 rgb(255 255 255 / 0.22),
+      inset 0 -1px 0 0 rgb(0 0 0 / 0.15),
+      0 12px 40px rgb(0 0 0 / 0.35);
+  }
+
+  /* Interactive affordance — attach ONLY to real controls (skill rule:
+     .interactive() is never applied to static status) */
+  .glass-hover {
+    transition:
+      background 0.3s ease,
+      transform 0.15s ease,
+      box-shadow 0.3s ease;
+  }
+  .glass-hover:hover {
+    background: color-mix(in oklab, var(--background) 72%, transparent);
+  }
+  .glass-hover:active {
+    transform: scale(0.98);
+  }
+  .glass-dark.glass-hover:hover {
+    background: rgb(255 255 255 / 0.14);
+  }
+
+  /* ≈ pre-iOS 26 fallback: no backdrop-filter support → solid surface */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass {
+      background: var(--background);
+    }
+    .glass-dark {
+      background: rgb(12 12 14 / 0.9);
+    }
+  }
+
+  /* ≈ Reduce Transparency */
+  @media (prefers-reduced-transparency: reduce) {
+    .glass {
+      background: var(--background);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+    .glass-dark {
+      background: rgb(12 12 14 / 0.94);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  /* ≈ Reduce Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .glass-hover:active {
+      transform: none;
+    }
+  }
+}

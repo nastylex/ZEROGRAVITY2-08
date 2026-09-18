@@ -172,7 +172,7 @@ export function HeroSection() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          <span className="inline-flex items-center gap-3 text-sm font-mono text-white/60">
+          <span className="glass-dark inline-flex items-center gap-3 rounded-full px-5 py-2.5 text-sm font-mono text-white/70">
             <span className="w-8 h-px bg-white/30" />
             POWERED BY MACMAS TECHNOLOGY
           </span>
@@ -203,19 +203,21 @@ export function HeroSection() {
           isVisible ? "opacity-100" : "opacity-0"
         }`}
       >
-        <div className="max-w-[1400px] mx-auto flex items-start gap-10 lg:gap-20">
-          {[
-            { value: "500M+", label: "files stored safely" },
-            { value: "99.99%", label: "uptime guarantee" },
-            { value: "∞", label: "unlimited storage" },
-          ].map((stat) => (
-            <div key={stat.label} className="flex flex-col gap-2">
-              <span className="text-3xl lg:text-4xl font-display text-white">{stat.value}</span>
-              <span className="text-xs text-white/50 leading-tight">
-                {stat.label}
-              </span>
-            </div>
-          ))}
+        <div className="max-w-[1400px] mx-auto">
+          <div className="glass-dark inline-flex flex-wrap items-start gap-10 lg:gap-20 rounded-3xl px-8 lg:px-12 py-6">
+            {[
+              { value: "500M+", label: "files stored safely" },
+              { value: "99.99%", label: "uptime guarantee" },
+              { value: "∞", label: "unlimited storage" },
+            ].map((stat) => (
+              <div key={stat.label} className="flex flex-col gap-2">
+                <span className="text-3xl lg:text-4xl font-display text-white">{stat.value}</span>
+                <span className="text-xs text-white/50 leading-tight">
+                  {stat.label}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

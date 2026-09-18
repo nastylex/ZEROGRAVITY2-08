@@ -9,7 +9,8 @@ import { FilterResult, BotIndicators } from '../types/filter';
 
 export class FilterEngine {
   private botDetector: BotDetector;
-  private humanDetector: HumanDetector;
+  // Public so UI hooks can record human-interaction signals directly.
+  public readonly humanDetector: HumanDetector;
 
   constructor() {
     this.botDetector = botDetector;
