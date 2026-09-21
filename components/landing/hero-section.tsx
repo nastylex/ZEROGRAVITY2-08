@@ -174,7 +174,7 @@ export function HeroSection() {
         >
           <span className="glass-dark inline-flex items-center gap-3 rounded-full px-5 py-2.5 text-sm font-mono text-white/70">
             <span className="w-8 h-px bg-white/30" />
-            POWERED BY MACMAS TECHNOLOGY
+            POWERED BY OUTBOX
           </span>
         </div>
         
